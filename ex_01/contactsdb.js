@@ -1,4 +1,7 @@
 // this uses lowDB to store state/data in a file
+// document the API here:
+// get all contacts - GET /contacts - returns all contacts
+// add a contact - POST /contact - adds a contact
 const express = require("express");
 const app = express();
 const low = require("lowdb");
