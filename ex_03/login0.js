@@ -10,7 +10,7 @@ const authenticate = (req, res, next) => {
   const url = req.url;
   if (url) {
     let path = url.split("=");
-    if (path[1] == "secret-toke") {
+    if (path[1] == "secret-token") {
       req.user = "john";
       next(); // call next route
     }

@@ -5,6 +5,7 @@ const fetch = require("node-fetch");
 var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({}));
+
 const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
@@ -75,6 +76,7 @@ app.get("/login", (req, res) => {
 app.post("/auth", (req, res) => {
   let { name, password } = req.body;
   // check if user is in DB if so send back security token
+  // check is not implemented here but we send back a token with value secret-token
   let form = `<form action="/contacts" method="get">
   <label for="name">Get Contacts </label>
   <input id="token" type="hidden" name="token" value="secret-token">
@@ -89,6 +91,7 @@ app.get("/contacts", authenticate2, function (req, res) {
 });
 
 app.get("/contacts/:name/:email", (req, res) => {
+  // just send a response with name and email
   res.send(`name: ${req.params.name}, email: ${req.params.email}`);
 });
 // add a contact
@@ -97,6 +100,7 @@ app.post("/contact", (req, res) => {
   res.redirect("/contacts/" + req.body.name);
 });
 app.get("/contacts/:name", (req, res) => {
+  // in this case we redirect with name as a parameter
   res.send("Redirect with " + req.params.name);
 });
 
