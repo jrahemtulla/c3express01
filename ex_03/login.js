@@ -109,6 +109,7 @@ app.get("/contacts/:name/:email", (req, res) => {
   res.send(`name: ${req.params.name}, email: ${req.params.email}`);
 });
 // add a contact using Postman or curl
+// http://localhost:3000?name=name&email= anne%40mit.edu&age=21
 //  curl -X POST -H "Content-Type: application/json" -d '{"name":"john","age":21,"email":"
 
 app.post("/contact", (req, res) => {

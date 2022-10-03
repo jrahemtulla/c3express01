@@ -26,6 +26,10 @@ app.get("/", function (req, res) {
   res.send("<h1>  Routes: try  GET /contacts </h1>");
 });
 // list all contacts
+// http://localhost:3000/contacts  in your browser
+// in your terminal window
+// curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3000/contacts
+
 app.get("/contacts", function (req, res) {
   res.json(contacts);
 });

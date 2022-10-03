@@ -29,7 +29,7 @@ app.get("/", function (req, res) {
 app.get("/contacts", function (req, res) {
   res.json(contacts);
 });
-// pass in data in the url as a query string
+// pass in data in GET in the url as a query string
 // http://localhost:3000/contact?name=bruce%20wayne&age=32&email=bruce%40mit.edu
 app.get("/contact", function (req, res) {
   // get the data from the query string
@@ -47,11 +47,6 @@ app.get("/contact", function (req, res) {
   // send back the new contact
   res.json(newContact);
 });
-// pass contact name and email in params to add to contacts array
-// http://localhost:3000/contact/sam%20smith/sam%40mit.edu
-app.get("/contacts", (req, res) => {
-  // just send a response with name and email as a test of using params 
-  res.send(`name: ${req.params.name}, email: ${req.params.email}`);
-});
+
 app.listen(3000);
 console.log("Running on port 3000");

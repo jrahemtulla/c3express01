@@ -15,7 +15,7 @@ const getData = async () => {
     console.log("error");
   }
 };
-getData();
+getData(); // call the function
 app.get("/", function (req, res) {
   res.send("<h1>  Routes: try POST to /contact and GET /contacts </h1>");
 });
@@ -25,9 +25,10 @@ app.get("/contacts", function (req, res) {
 });
 // add a contact
 app.post("/contact", (req, res) => {
+  // get the data from the request body
   contacts.push({ name: req.body.name, email: req.body.email });
   res.json(req.body);
 });
 
-app.listen(3000);
-console.log("Running on port 3000");
+app.listen(3000, () => console.log("Running on port 3000"));
+

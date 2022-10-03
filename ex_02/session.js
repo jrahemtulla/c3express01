@@ -4,7 +4,7 @@ let express = require("express");
 
 let app = express();
 
-app.set("trust proxy", 1); // trust first proxy
+app.set("trust proxy",1); // trust first proxy
 
 app.use(
   cookieSession({

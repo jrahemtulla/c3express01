@@ -1,4 +1,3 @@
-// contacts data is hardwired into memory
 // server uses routes to GET and POST data
 const express = require("express");
 const app = express();
@@ -43,10 +42,14 @@ app.get("/contacts", function (req, res) {
   res.json(contacts);
 });
 // add a contact using Postman or curl
+// curl -X POST -H "Content-Type: application/json" -d '{"name":"john doe","age":25,"email":"john@mit.edu"}' http://localhost:3000/contact 
+//  Edit this code so that it adds a new contact to the contacts array and returns all the contacts
 app.post("/contact", (req, res) => {
-  contacts.push({ name: req.body.name, age: req.body.age, email: req.body.email });
-  res.json(req.body);
-  console.log(`Addding: $req.body`)
+  //const newContact = req.body;  // this is the same as the next line but shorter
+  const newContact = { name: req.body.name, age: req.body.age, email: req.body.email }
+// add contact to contacts array 
+  res.json(newContact); // edit to send back all contacts 
+  console.log(`Addding: ${JSON.stringify(req.body)}`) // notice backticks for template string
 });
 
 app.listen(3000);
