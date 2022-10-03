@@ -42,9 +42,9 @@ app.get("/", function (req, res) {
 app.get("/contacts", function (req, res) {
   res.json(contacts);
 });
-// add a contact
+// add a contact using Postman or curl
 app.post("/contact", (req, res) => {
-  contacts.push({ name: req.body.name, email: req.body.email });
+  contacts.push({ name: req.body.name, age: req.body.age, email: req.body.email });
   res.json(req.body);
   console.log(`Addding: $req.body`)
 });
