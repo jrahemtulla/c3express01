@@ -9,7 +9,7 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({}));
 
-// authenticate2 is a middleware function that checks for a secret token in the url
+// authenticate is a middleware function that checks for a secret token in the url
 // if the token is present, it calls next() to call the next route
 // if the token is not present, it sends a 401 error
 const authenticate = (req, res, next) => {
@@ -34,19 +34,22 @@ var contacts = [
     name: "peter parker",
     age: 21,
     email: "peter@mit.edu",
-    role: "reader"
+    role: "none",
+    password: "test1"
   },
   {
     name: "bruce wayne",
     age: 32,
     email: "bruce@mit.edu",
-    role: "reader"
+    role: "none",
+    password: "test2"
   },
   {
     name: "diana prince",
     age: 25,
     email: "diana@mit.edu",
-    role: "editor"
+    role: "editor",
+    password: "test3"
   },
 ];
 // app.get("/", function (req, res) {
@@ -65,9 +68,12 @@ app.get("/login", (req, res) => {
   res.send(form);
 });
 // app.post("/auth", (req, res) => {
-// check the user name and password
-// if (req.body.name == "name" && req.body.password == "password") {
-//   res.send("authorized");
+// write a function to check the user name and password from the form 
+// if it matches a contact, send back a form with a secret token in the url
+// That form should allow the user with the correct role = editor to view the contacts
+// if it does not match a contact, send back the login form with an error message
+//
+
 app.post("/auth", (req, res) => {
   let { name, password } = req.body;
   // check the user name and password
