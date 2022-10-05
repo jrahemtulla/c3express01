@@ -8,27 +8,15 @@ var bodyParser = require("body-parser");
 // the middleware was a part of Express.js earlier but now you have to install it separately.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({}));
-//athenticate is a middleware function that checks for a secret token
+
+// authenticate2 is a middleware function that checks for a secret token in the url
 // if the token is present, it calls next() to call the next route
 // if the token is not present, it sends a 401 error
 const authenticate = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (authHeader) {
-    if (authHeader == "passwordname") {
-      req.user = "name";
-      next();
-    }
-  } else {
-    res.sendStatus(401);
-  }
-};
-// authenticate2 is a middleware function that checks for a secret token
-// if the token is present, it calls next() to call the next route
-// if the token is not present, it sends a 401 error
-const authenticate2 = (req, res, next) => {
   const url = req.url;
   if (url) {
     let path = url.split("=");
+    // not so secrt token is in the url
     if (path[1] == "secret-token") {
       req.user = "john";
       next();
@@ -38,38 +26,32 @@ const authenticate2 = (req, res, next) => {
   }
 };
 // store contacts in an arrays
+// role is a property of each contact that is either "reader" or "editor"
+// reader can only read contacts
+// editor can read and write contacts
 var contacts = [
   {
     name: "peter parker",
     age: 21,
     email: "peter@mit.edu",
-    courses: [
-      { number: "1.00", name: "engr comp" },
-      { number: "3.00", name: "intro bio" },
-    ],
+    role: "reader"
   },
   {
     name: "bruce wayne",
     age: 32,
     email: "bruce@mit.edu",
-    courses: [
-      { number: "2.00", name: "intro ME" },
-      { number: "3.00", name: "intro MS" },
-    ],
+    role: "reader"
   },
   {
     name: "diana prince",
     age: 25,
     email: "diana@mit.edu",
-    courses: [
-      { number: "2.00", name: "intro arch" },
-      { number: "1.00", name: "intro chem" },
-    ],
+    role: "editor"
   },
 ];
 // app.get("/", function (req, res) {
 app.get("/", function (req, res) {
-  res.send("<h1> Routes: try POST to /contact and GET /contacts </h1>");
+  res.send("<h1> Routes: Try http://localhost:3000/login </h1>");
 });
 // login form with a post request to /auth  and a get request to /login
 app.get("/login", (req, res) => {
@@ -88,8 +70,11 @@ app.get("/login", (req, res) => {
 //   res.send("authorized");
 app.post("/auth", (req, res) => {
   let { name, password } = req.body;
-  // check if user is in DB if so send back security token
+  // check the user name and password
+  if(name == "name" && password == "password") {
+  // we should check if user is in DB if so send back security token
   // check is not implemented here but we send back a token with value secret-token
+  // we dynamically create a form with a hidden field that contains the token
   let form = `<form action="/contacts" method="get">
   <label for="name">Get Contacts </label>
   <input id="token" type="hidden" name="token" value="secret-token">
@@ -97,20 +82,13 @@ app.post("/auth", (req, res) => {
   </form>`;
 
   res.send(form);
-});
+}});
 
 //athenticate2 is used to check if the token is correct
-app.get("/contacts", authenticate2, (req, res) => {
+app.get("/contacts", authenticate, (req, res) => {
   res.json(contacts);
 });
-// authenticate is used to check if the user is in the DB
-app.get("/contacts/:name/:email", (req, res) => {
-  // just send a response with name and email
-  res.send(`name: ${req.params.name}, email: ${req.params.email}`);
-});
-// add a contact using Postman or curl
-// http://localhost:3000?name=name&email= anne%40mit.edu&age=21
-//  curl -X POST -H "Content-Type: application/json" -d '{"name":"john","age":21,"email":"
+
 
 app.post("/contact", (req, res) => {
   // add a contact
@@ -118,10 +96,5 @@ app.post("/contact", (req, res) => {
   contacts.push(contact);
   res.redirect("/contacts/" + req.body.name);
 });
-app.get("/contacts/:name", (req, res) => {
-  // in this case we redirect with name as a parameter
-  res.send("Redirect with " + req.params.name);
-});
-app.listen(3000, function () {
-console.log("Running on port 3000");
-});
+
+app.listen(3000, ()=> {console.log("Running on port 3000");});
