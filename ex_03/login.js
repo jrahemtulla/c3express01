@@ -18,7 +18,7 @@ const authenticate = (req, res, next) => {
     let path = url.split("=");
     // not so secrt token is in the url
     if (path[1] == "secret-token") {
-      req.user = "admin";
+      req.user = "admin"; // we don't use this but it could be used to identify the user
       next();
     }
   } else {
@@ -48,7 +48,7 @@ var contacts = [
     name: "diana prince",
     age: 25,
     email: "diana@mit.edu",
-    role: "editor",
+    role: "admin",
     password: "test3"
   },
 ];
@@ -90,12 +90,18 @@ app.post("/auth", (req, res) => {
   res.send(form);
 }});
 
-//athenticate is used to check if the token is correct
+//athenticate is used to check if the  secret token is correct
 app.get("/contacts", authenticate, (req, res) => {
-  res.json(contacts);
+  //authenticate adds user=admin to the request object if the token is correct
+  // we can use this to check if the user is an admin
+  if(req.user == "admin") {
+    res.json(contacts);
+  } else {
+    res.sendStatus(401);
+  }
 });
 
-
+// add authentication to the post request to /contact to allow only users with role = admin to add a contact
 app.post("/contact", (req, res) => {
   // add a contact
   let contact = req.body;
