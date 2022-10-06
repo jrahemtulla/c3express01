@@ -8,7 +8,7 @@ var bodyParser = require("body-parser");
 // the middleware was a part of Express.js earlier but now you have to install it separately.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({}));
-
+const port = 3001;
 // authenticate is a middleware function that checks for a secret token in the url
 // if the token is present, it calls next() to call the next route
 // if the token is not present, it sends a 401 error
@@ -18,7 +18,7 @@ const authenticate = (req, res, next) => {
     let path = url.split("=");
     // not so secrt token is in the url
     if (path[1] == "secret-token") {
-      req.user = "john";
+      req.user = "admin";
       next();
     }
   } else {
@@ -54,7 +54,7 @@ var contacts = [
 ];
 // app.get("/", function (req, res) {
 app.get("/", function (req, res) {
-  res.send("<h1> Routes: Try http://localhost:3000/login </h1>");
+  res.send(`<h1> Routes: Try http://localhost:${port}/login </h1>`);
 });
 // login form with a post request to /auth  and a get request to /login
 app.get("/login", (req, res) => {
@@ -90,7 +90,7 @@ app.post("/auth", (req, res) => {
   res.send(form);
 }});
 
-//athenticate2 is used to check if the token is correct
+//athenticate is used to check if the token is correct
 app.get("/contacts", authenticate, (req, res) => {
   res.json(contacts);
 });
@@ -103,4 +103,4 @@ app.post("/contact", (req, res) => {
   res.redirect("/contacts/" + req.body.name);
 });
 
-app.listen(3000, ()=> {console.log("Running on port 3000");});
+app.listen(port, ()=> {console.log(`Running on port: ${port}`);});
