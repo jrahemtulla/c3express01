@@ -18,7 +18,6 @@ const authenticate = (req, res, next) => {
     let path = url.split("=");
     // not so secrt token is in the url
     if (path[1] == "secret-token") {
-      req.user = "admin"; // we don't use this but it could be used to identify the user
       next();
     }
   } else {
@@ -73,14 +72,26 @@ app.get("/login", (req, res) => {
 // That form should allow the user with the correct role = editor to view the contacts
 // if it does not match a contact, send back the login form with an error message
 //
+// fucntion checkUser(name, password) {
+//   for (let i = 0; i < contacts.length; i++) {
+//     if (contacts[i].name == name && contacts[i].password == password){
+//       return ???? 
+//}
+//   }else{
+//     return 401
+//   }
+//} 
 
 app.post("/auth", (req, res) => {
   let { name, password } = req.body;
   // check the user name and password
   if(name == "name" && password == "password") {
+  // PS3 - This is where you need to make chnages
+  // 1) Check that the name and password match a contact
+  // 2) If they do, check the role and if its admin send back a form with a secret token in the url
   // we should check if user is in DB if so send back security token
   // check is not implemented here but we send back a token with value secret-token
-  // we dynamically create a form with a hidden field that contains the token
+  // we dynamically create a form with a hidden field that contains the token - secret-token (no need to change this)
   let form = `<form action="/contacts" method="get">
   <label for="name">Get Contacts </label>
   <input id="token" type="hidden" name="token" value="secret-token">
