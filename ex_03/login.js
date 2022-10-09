@@ -18,6 +18,7 @@ const authenticate = (req, res, next) => {
     let path = url.split("=");
     // not so secrt token is in the url
     if (path[1] == "secret-token") {
+      req.user = "admin"; 
       next();
     }
   } else {
@@ -81,7 +82,7 @@ app.get("/login", (req, res) => {
 //     return 401
 //   }
 //} 
-
+//
 app.post("/auth", (req, res) => {
   let { name, password } = req.body;
   // check the user name and password
