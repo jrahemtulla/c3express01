@@ -73,14 +73,16 @@ app.get("/login", (req, res) => {
 // That form should allow the user with the correct role = editor to view the contacts
 // if it does not match a contact, send back the login form with an error message
 //
-// fucntion checkUser(name, password) {
-//   for (let i = 0; i < contacts.length; i++) {
-//     if (contacts[i].name == name && contacts[i].password == password){
-//       return ???? 
-//}
-//   }else{
-//     return 401
-//   }
+function checkUser(name, password) {
+for (let i = 0; i < contacts.length; i++) {
+if (contacts[i].name == name && contacts[i].password == password){
+return cotacts[i].name 
+}
+} else
+ {
+    {res.redirect(401,'/login');
+}
+}
 //} 
 //
 app.post("/auth", (req, res) => {
